@@ -8,7 +8,9 @@ module Hotel
       @all_rooms = []
       create_rooms
 
+      # reservation1 = Reservation.new(1, [@all_rooms[0]], DateRange.new(Date.new(2017,9,1), Date.new(2017,9,3)))
       @all_reservations = []
+
 
     end
 
@@ -24,18 +26,18 @@ module Hotel
 
       date_range = DateRange.new(start_date, end_date)
       #this throws error if dates are wrong right away - begin rescue?
-      # availability = check_availability(start_date, end_date)
-      # if availability.length < no_of_rooms
-      #   ArgumentError.new "not enough rooms"
-      # elsif availability == []
-      #   ArgumentError.new "no rooms avail"
-      # end
+      availability = check_availability(start_date, end_date)
+      if availability.length < no_of_rooms
+        ArgumentError.new "not enough rooms"
+      elsif availability == []
+        ArgumentError.new "no rooms avail"
+      end
 
       id = @all_reservations.length
       rooms = [@all_rooms[0]]
-      # no_of_rooms.times do |i|
-      #   rooms << availability[i]
-      # end
+      no_of_rooms.times do |i|
+        rooms << availability[i]
+      end
 
       reservation = Reservation.new(id, rooms, date_range)
       @all_reservations << reservation
@@ -43,20 +45,31 @@ module Hotel
     end
 
     def check_reserved(start_date, end_date)
-      check_against = DateRange.new(start_date, end_date)
+      check_against = DateRange.new(start_date, end_date).nights_arr
+      not_available = []
+
       check_against.each do |date|
-        #need to adapt DateRange to send Dates not days ughhhhhh
       # check_against.each do |index|
+
         @all_reservations.each do |reservation|
-          if reservation.date_range.include?(check_against[index])
-            not_available << reservation.room
+          if reservation.date_range.include?(date)
+            reservation.rooms.each do |room|
+              not_available << room
+            end
           end
         end
       end
+      return not_available
     end
-#
-# def check_availability
-#   return inverse of check_reserved
-# end
+
+    def check_availability(start_date, end_date)
+      available = []
+      @all_rooms.each do |room|
+        if check_reserved(start_date, end_date).include?(room) == false
+          available << room
+        end
+      end
+      return available
+    end
   end
 end
