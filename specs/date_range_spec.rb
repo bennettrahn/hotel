@@ -35,11 +35,14 @@ describe 'DateRange class' do
     it 'creates an Array' do
       @range.nights_arr.must_be_kind_of Array
     end
+    it 'is an array full of Dates' do
+      @range.nights_arr[0].must_be_kind_of Date
+    end
     it 'has the right number of nights' do
       @range.nights_arr.length.must_equal @range.number_of_nights
     end
     it 'actually has the nights you want' do
-      @range.nights_arr.must_equal [1,2]
+      @range.nights_arr[0].day.must_equal 1
     end
 
   end

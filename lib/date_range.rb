@@ -20,7 +20,7 @@ module Hotel
     def nights_arr
       nights_arr = []
       @number_of_nights.times do |i|
-        nights_arr << (@start_date + i).day
+        nights_arr << (@start_date + i)
       end
       return nights_arr
     end
