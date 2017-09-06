@@ -27,13 +27,11 @@ module Hotel
       #this throws error if dates are wrong right away - begin rescue?
       availability = check_availability(start_date, end_date)
       if availability.length < no_of_rooms
-        ArgumentError.new "not enough rooms"
-      elsif availability == []
-        ArgumentError.new "no rooms avail"
+        raise ArgumentError.new "not enough rooms available for that date."
       end
 
-      id = @all_reservations.length
-      rooms = [@all_rooms[0]]
+      id = (@all_reservations.length + 1)
+      rooms = []
       no_of_rooms.times do |i|
         rooms << availability[i]
       end

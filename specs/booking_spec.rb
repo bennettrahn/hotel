@@ -26,18 +26,6 @@ describe 'Booking class' do
         @booking1.total_cost.must_equal 200
     end
   end
-  xdescribe 'add_room' do
-    it 'should add room number to reserved rooms' do
-      room1 = Hotel::Room.new(2)
-      @booking1.add_room(room1)
-      @booking1.rooms.length.must_equal 2
-    end
 
-    it 'should up the total_cost' do
-      room1 = Hotel::Room.new(1)
-      @booking1.add_room(room1)
-      @booking1.total_cost.must_equal 200
-    end
-  end
 
 end
