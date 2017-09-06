@@ -25,5 +25,12 @@ module Hotel
       return nights_arr
     end
 
+    def include?(check_date)
+      nights_arr.each do |date|
+        return true if date == check_date
+      end
+      return false
+    end
+
   end
 end
