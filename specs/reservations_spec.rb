@@ -10,10 +10,10 @@ describe 'Reservations class' do
     date_range = Hotel::DateRange.new(@start_date, @end_date)
 
     room = @hotel_res.all_rooms[0]
-    res1 = Hotel::Reservation.new(1, [room], date_range)
+    res1 = Hotel::Booking.new(1, [room], date_range)
     @hotel_res.all_reservations << res1
 
-    @res2 = @hotel_res.make_reservation(1, @start_date, @end_date)
+    @res2 = @hotel_res.make_booking(1, @start_date, @end_date)
   end
   describe 'initialize' do
     it 'can be instantiated' do
@@ -30,13 +30,13 @@ describe 'Reservations class' do
     end
   end
 
-  describe 'make_reservation' do
-    it 'creates a new reservation' do
-      @res2.must_be_kind_of Hotel::Reservation
+  describe 'make_booking' do
+    it 'creates a new booking' do
+      @res2.must_be_kind_of Hotel::Booking
     end
 
-    it 'adds a reservation to all_reservations' do
-      @hotel_res.all_reservations[0].must_be_kind_of Hotel::Reservation
+    it 'adds a booking to all_reservations' do
+      @hotel_res.all_reservations[0].must_be_kind_of Hotel::Booking
       @hotel_res.all_reservations.length.must_equal 2
     end
   end
@@ -50,7 +50,7 @@ describe 'Reservations class' do
 
     end
 
-    it 'still works for the first reservation ever' do
+    it 'still works for the first booking ever' do
 
     end
   end

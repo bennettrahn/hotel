@@ -1,7 +1,7 @@
 require 'date'
 
 module Hotel
-  class Reservation
+  class Booking
     attr_reader :id, :date_range, :rooms, :total_cost
 
     # change to include: (id, rooms[], date_range)

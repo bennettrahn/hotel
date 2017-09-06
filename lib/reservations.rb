@@ -8,7 +8,6 @@ module Hotel
       @all_rooms = []
       create_rooms
 
-      # reservation1 = Reservation.new(1, [@all_rooms[0]], DateRange.new(Date.new(2017,9,1), Date.new(2017,9,3)))
       @all_reservations = []
 
 
@@ -22,7 +21,7 @@ module Hotel
     end
 
 
-    def make_reservation(no_of_rooms, start_date, end_date)
+    def make_booking(no_of_rooms, start_date, end_date)
 
       date_range = DateRange.new(start_date, end_date)
       #this throws error if dates are wrong right away - begin rescue?
@@ -39,9 +38,9 @@ module Hotel
         rooms << availability[i]
       end
 
-      reservation = Reservation.new(id, rooms, date_range)
-      @all_reservations << reservation
-      return reservation
+      booking = Booking.new(id, rooms, date_range)
+      @all_reservations << booking
+      return booking
     end
 
     def check_reserved(start_date, end_date)
@@ -51,9 +50,9 @@ module Hotel
       check_against.each do |date|
       # check_against.each do |index|
 
-        @all_reservations.each do |reservation|
-          if reservation.date_range.include?(date)
-            reservation.rooms.each do |room|
+        @all_reservations.each do |booking|
+          if booking.date_range.include?(date)
+            booking.rooms.each do |room|
               not_available << room
             end
           end
