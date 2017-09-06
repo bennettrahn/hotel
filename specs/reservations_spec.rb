@@ -27,9 +27,26 @@ describe 'Reservations class' do
 
   describe 'make_reservation' do
     it 'creates a new reservation' do
-      @hotel_res.all_reservations[0].must_be_kind_of Hotel::Reservation
+      start_date = Date.new(2017,9,1)
+      end_date = Date.new(2017,9,3)
+      @hotel_res.make_reservation(1, start_date, end_date).must_be_kind_of Hotel::Reservation
     end
 
+    it 'adds a reservation to all_reservations' do
+      start_date = Date.new(2017,9,1)
+      end_date = Date.new(2017,9,3)
+      @hotel_res.make_reservation(1, start_date, end_date)
+      @hotel_res.all_reservations[0].must_be_kind_of Hotel::Reservation
+      @hotel_res.all_reservations.length.must_equal 1
+    end
+  end
 
+  describe 'check_reserved' do
+    it 'returns an array of rooms' do
+      start_date = Date.new(2017,9,1)
+      end_date = Date.new(2017,9,3)
+      @hotel_res.check_reserved(start_date, end_date).must_be_kind_of Array
+      @hotel_res.check_reserved(start_date, end_date)[0].must_be_kind_of Hotel::Room
+    end
   end
 end
