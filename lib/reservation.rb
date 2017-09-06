@@ -4,17 +4,21 @@ module Hotel
   class Reservation
     attr_reader :id, :date_range, :rooms, :total_cost
 
-    def initialize(id, start_date, end_date)
+    # change to include: (id, rooms[], date_range)
+
+    def initialize(id, rooms, date_range)
       @id = id
-      @date_range = DateRange.new(start_date, end_date)
-      @rooms = []
+      @date_range = date_range
+      @rooms = rooms
       @total_cost = 0
+      #this is a mess fix it
+      @rooms.each { |room| @total_cost += room.cost}
     end
 
-    def add_room(room)
-      @rooms << room.number
-      @total_cost += room.cost
-    end
+    # def add_room(room)
+    #   @rooms << room.number
+    #   @total_cost += room.cost
+    # end
 
   end
 end
