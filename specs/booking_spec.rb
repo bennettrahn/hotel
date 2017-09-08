@@ -26,11 +26,6 @@ describe 'Booking class' do
       @booking1.total_cost.must_equal 200
     end
 
-    it "can be a part of a block, but default isn't." do
-      @booking1.block.must_equal false
-      booking2 = Hotel::Booking.new(1, [@room], @date_range, block: true)
-      booking2.block.must_equal true
-    end
   end
 
 

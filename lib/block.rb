@@ -6,10 +6,12 @@ module Hotel
       super
     end
 
-    # def add_room(room)
-    #   @rooms << room.number
-    #   @total_cost += room.cost
-    # end
+    def reserve_room(num)
+      num.times do |i|
+        self.rooms[i].reserved = true
+      end
+
+    end
 
   end
 end

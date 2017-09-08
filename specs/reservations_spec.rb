@@ -85,6 +85,7 @@ describe 'Reservations class' do
     end
     it "can create a block reservation (and it doesn't mess anything else up.)" do
       @block_booking.must_be_kind_of Hotel::Booking
+      @block_booking.must_be_kind_of Hotel::Block
     end
 
     it 'has 5 rooms, but none are reserved' do
@@ -94,11 +95,7 @@ describe 'Reservations class' do
       end
     end
 
-    it 'can reserve a room within a block' do
-      @block_booking.reserve_room(1)
-      @block_booking.rooms.must_equal 5
-      @block_booking.rooms[0].reserved.must_equal true
-    end
+
   end
 
   describe 'check_reserved' do

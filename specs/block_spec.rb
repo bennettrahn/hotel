@@ -22,3 +22,20 @@ describe 'make_block' do
 
   end
 end
+
+# #this is in the wrong place?
+# it 'can reserve a room within a block' do
+#   @block_booking.reserve_room(1)
+#   @block_booking.rooms.length.must_equal 5
+#   @block_booking.rooms[0].reserved.must_equal true
+# end
+#
+# it 'only works on blocks' do
+#   @booking2.reserve_room(1).must_equal "not a block"
+# end
+
+# it "can be a part of a block, but default isn't." do
+#   @booking1.block.must_equal false
+#   booking2 = Hotel::Booking.new(1, [@room], @date_range, block: true)
+#   booking2.block.must_equal true
+# end

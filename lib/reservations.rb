@@ -42,12 +42,11 @@ module Hotel
       end
 
       if block == true
-        true_or_false = true
+        booking = Block.new(id, rooms, date_range)
       else
-        true_or_false = false
+        booking = Booking.new(id, rooms, date_range)
       end
 
-      booking = Booking.new(id, rooms, date_range, block: true_or_false)
       @all_reservations << booking
       return booking
     end
@@ -80,9 +79,6 @@ module Hotel
       return available
     end
 
-    def reserve_room(num)
 
-
-    end
   end
 end
