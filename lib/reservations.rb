@@ -36,13 +36,18 @@ module Hotel
         room = availability[i]
         if block == true
           room.reserved = false
+        else
+          room.reserved = true
         end
-        #add function to mark regular rooms as true
         rooms << room
       end
 
       if block == true
-        booking = Block.new(id, rooms, date_range)
+        if no_of_rooms > 5
+          raise ArgumentError.new("Blocks can have a maximum of 5 rooms")
+        end
+        block_id = id
+        booking = Block.new(id, rooms, date_range, block_id)
       else
         booking = Booking.new(id, rooms, date_range)
       end

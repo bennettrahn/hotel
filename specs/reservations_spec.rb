@@ -67,6 +67,10 @@ describe 'Reservations class' do
       booking3.rooms[0].number.must_equal 3
     end
 
+    it 'room is marked as reserved' do
+      @booking2.rooms[0].reserved.must_equal true
+    end
+
     it 'makes bookings that can start on checkout day' do
       date1 = Date.new(2017,12,1)
       @hotel_res.make_booking(20, date1, (date1 + 1))
@@ -81,7 +85,6 @@ describe 'Reservations class' do
   describe 'make a block' do
     before do
       @block_booking = @hotel_res.make_booking(5, @start_date, @end_date, block: true)
-
     end
     it "can create a block reservation (and it doesn't mess anything else up.)" do
       @block_booking.must_be_kind_of Hotel::Booking
@@ -95,8 +98,37 @@ describe 'Reservations class' do
       end
     end
 
+    it 'can only have 5 rooms per block' do
+      proc {@hotel_res.make_booking(6, @start_date, @end_date, block: true)}.must_raise ArgumentError
+
+    end
+
+    it 'can reserve a room within a block' do
+      @block_booking.reserve_room(1)
+      @block_booking.rooms.length.must_equal 5
+      @block_booking.rooms[0].reserved.must_equal true
+    end
+
+    it 'reserving a room creates a new reservation, linked to the block' do
+      room_reserve = @block_booking.reserve_room(1)
+
+      room_reserve.id.wont_equal @block_booking.id
+
+      room_reserve.block_id.must_equal @block_booking.block_id
+
+    end
+
+    it 'reserving rooms within only works on blocks' do
+      proc {@booking2.reserve_room(1)}.must_raise NoMethodError
+    end
+
+    it 'reserved room has the same date_range as block' do
+      room_reserve = @block_booking.reserve_room(1)
+      @block_booking.date_range.must_equal room_reserve.date_range
+    end
 
   end
+
 
   describe 'check_reserved' do
     it 'returns an array of rooms' do
