@@ -21,7 +21,7 @@ module Hotel
     end
 
 
-    def make_booking(no_of_rooms, start_date, end_date)
+    def make_booking(no_of_rooms, start_date, end_date, block: false)
 
       date_range = DateRange.new(start_date, end_date)
       #this throws error if dates are wrong right away - begin rescue?

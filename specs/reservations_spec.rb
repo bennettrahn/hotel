@@ -32,6 +32,9 @@ describe 'Reservations class' do
     end
   end
 
+
+
+
   describe 'make_booking' do
     it 'creates a new booking' do
       @booking2.must_be_kind_of Hotel::Booking
@@ -88,9 +91,6 @@ describe 'Reservations class' do
       @hotel_res.check_availability(date1, date2).length.must_equal 20
 
     end
-
-
-
 
   end
 

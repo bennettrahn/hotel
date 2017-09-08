@@ -1,13 +1,13 @@
-require 'pry'
+# require 'pry'
 require_relative 'spec_helper'
 
 describe 'Booking class' do
   before do
     start_date = Date.new(2017,9,1)
     end_date = Date.new(2017,9,3)
-    date_range = Hotel::DateRange.new(start_date, end_date)
-    room = Hotel::Room.new(1)
-    @booking1 = Hotel::Booking.new(1, [room], date_range)
+    @date_range = Hotel::DateRange.new(start_date, end_date)
+    @room = Hotel::Room.new(1)
+    @booking1 = Hotel::Booking.new(1, [@room], @date_range)
   end
   describe 'initialize' do
     it 'can be instantiated' do
@@ -23,8 +23,9 @@ describe 'Booking class' do
     end
 
     it 'has a total_cost' do
-        @booking1.total_cost.must_equal 200
+      @booking1.total_cost.must_equal 200
     end
+
   end
 
 
