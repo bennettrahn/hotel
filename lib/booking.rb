@@ -16,12 +16,7 @@ module Hotel
       @block_id = block_id
     end
 
-
-
-    # def add_room(room)
-    #   @rooms << room.number
-    #   @total_cost += room.cost
-    # end
+    
 
   end
 end

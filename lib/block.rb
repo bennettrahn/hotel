@@ -10,18 +10,27 @@ module Hotel
     end
 
     def reserve_room(num)
-      rooms_reserved = []
+      if num > rooms_available.length
+        raise ArgumentError.new "Not enough rooms in block."
+      end
+      rooms_to_reserve = []
       num.times do |i|
         self.rooms[i].reserved = true
-        rooms_reserved << self.rooms[i]
+        rooms_to_reserve << self.rooms[i]
       end
-      booking = Booking.new(8, rooms_reserved, @date_range, block_id: @block_id)
+      booking = Booking.new(8, rooms_to_reserve, @date_range, block_id: @block_id)
+      return booking
     end
+    #write test to include rooms_available
 
     def rooms_available
-      rooms = []
-
-
+      rooms_available = []
+      @rooms.each do |room|
+        if room.reserved == false
+          rooms_available << room
+        end
+      end
+      return rooms_available
     end
   end
 end

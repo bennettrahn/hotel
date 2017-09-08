@@ -107,6 +107,7 @@ describe 'Reservations class' do
       @block_booking.reserve_room(1)
       @block_booking.rooms.length.must_equal 5
       @block_booking.rooms[0].reserved.must_equal true
+      @block_booking.rooms[4].reserved.must_equal false
     end
 
     it 'reserving a room creates a new reservation, linked to the block' do
@@ -125,6 +126,19 @@ describe 'Reservations class' do
     it 'reserved room has the same date_range as block' do
       room_reserve = @block_booking.reserve_room(1)
       @block_booking.date_range.must_equal room_reserve.date_range
+    end
+
+
+    it 'can return a list of availbe rooms within the block' do
+      @block_booking.reserve_room(1)
+      @block_booking.rooms_available.length.must_equal 4
+      @block_booking.rooms_available[0].must_be_kind_of Hotel::Room
+    end
+
+    it "can't reserve more rooms than the block has left." do
+      @block_booking.reserve_room(4)
+      proc {@block_booking.reserve_room(2)}.must_raise ArgumentError
+
     end
 
   end
