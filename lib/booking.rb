@@ -11,12 +11,13 @@ module Hotel
       @date_range = date_range
       @rooms = rooms
       @total_cost = 0
-      #this is a mess fix it
-      @rooms.each { |room| @total_cost += room.cost}
+      calculate_total
       @block_id = block_id
     end
 
-    
+    def calculate_total
+      @rooms.each { |room| @total_cost += room.cost}
+    end
 
   end
 end

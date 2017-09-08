@@ -4,9 +4,13 @@ module Hotel
     attr_reader :block_id
 
     def initialize(id, rooms, date_range, block_id)
-      # super
       super(id, rooms, date_range)
       @block_id = block_id
+      discount
+    end
+
+    def discount
+      @total_cost -= @total_cost * 0.2
     end
 
     def reserve_room(num)

@@ -141,6 +141,10 @@ describe 'Reservations class' do
 
     end
 
+    it 'blocks recieve a 20% discount' do
+      @block_booking.total_cost.must_equal 800
+    end
+
   end
 
 
