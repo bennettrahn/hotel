@@ -15,8 +15,14 @@ describe 'Room class' do
   end
 
   it 'can be not reserved but default is true.' do
-    @room1.reserved.must_equal true
+    @room1.reserved.to_s.must_equal ""
+    # I did ^this .to_s because minitest didn't like .must_equal nil......
     room2 = Hotel::Room.new(2, reserved: false)
     room2.reserved.must_equal false
+  end
+
+  it 'reserved status can be changed' do
+    @room1.reserved = true
+    @room1.reserved.must_equal true
   end
 end

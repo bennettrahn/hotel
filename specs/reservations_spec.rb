@@ -78,6 +78,29 @@ describe 'Reservations class' do
     end
   end
 
+  describe 'make a block' do
+    before do
+      @block_booking = @hotel_res.make_booking(5, @start_date, @end_date, block: true)
+
+    end
+    it "can create a block reservation (and it doesn't mess anything else up.)" do
+      @block_booking.must_be_kind_of Hotel::Booking
+    end
+
+    it 'has 5 rooms, but none are reserved' do
+      @block_booking.rooms.length.must_equal 5
+      @block_booking.rooms.each do |room|
+        room.reserved.must_equal false
+      end
+    end
+
+    it 'can reserve a room within a block' do
+      @block_booking.reserve_room(1)
+      @block_booking.rooms.must_equal 5
+      @block_booking.rooms[0].reserved.must_equal true
+    end
+  end
+
   describe 'check_reserved' do
     it 'returns an array of rooms' do
       @hotel_res.check_reserved(@start_date, @end_date).must_be_kind_of Array

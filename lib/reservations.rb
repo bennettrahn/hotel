@@ -33,10 +33,21 @@ module Hotel
       id = (@all_reservations.length + 1)
       rooms = []
       no_of_rooms.times do |i|
-        rooms << availability[i]
+        room = availability[i]
+        if block == true
+          room.reserved = false
+        end
+        #add function to mark regular rooms as true
+        rooms << room
       end
 
-      booking = Booking.new(id, rooms, date_range)
+      if block == true
+        true_or_false = true
+      else
+        true_or_false = false
+      end
+
+      booking = Booking.new(id, rooms, date_range, block: true_or_false)
       @all_reservations << booking
       return booking
     end
@@ -67,6 +78,11 @@ module Hotel
         end
       end
       return available
+    end
+
+    def reserve_room(num)
+
+
     end
   end
 end
