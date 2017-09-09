@@ -48,6 +48,7 @@ describe 'DateRange class' do
   end
 
   xdescribe 'range string' do
+    #write this if you get to the CLI
     it 'writes a string with the dates written all prettty' do
 
     end
