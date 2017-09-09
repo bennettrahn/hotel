@@ -27,28 +27,16 @@ module Hotel
     def make_booking(no_of_rooms, start_date, end_date, block: false)
 
       date_range = DateRange.new(start_date, end_date)
-      #this throws error if dates are wrong right away - begin rescue?
+
       availability = check_availability(start_date, end_date)
-      if availability.length < no_of_rooms
-        raise RoomQuantityError.new "not enough rooms available for that date."
-      end
+      check_if_enough(availability, no_of_rooms)
 
       id = (@all_reservations.length + 1)
-      rooms = []
-      no_of_rooms.times do |i|
-        room = availability[i]
-        if block == true
-          room.reserved = false
-        else
-          room.reserved = true
-        end
-        rooms << room
-      end
+
+      rooms = create_rooms_for_booking(no_of_rooms, availability, block)
 
       if block == true
-        if no_of_rooms > 5
-          raise RoomQuantityError.new("Blocks can have a maximum of 5 rooms")
-        end
+        check_number_for_block(no_of_rooms)
         block_id = id
         booking = Block.new(id, rooms, date_range, block_id)
       else
@@ -59,10 +47,36 @@ module Hotel
       return booking
     end
 
+    def create_rooms_for_booking(no_of_rooms, availability, block)
+      rooms = []
+      no_of_rooms.times do |i|
+        room = availability[i]
+        if block == true
+          room.reserved = false
+        else
+          room.reserved = true
+        end
+        rooms << room
+      end
+      return rooms
+    end
+
+    def check_number_for_block(no_of_rooms)
+      if no_of_rooms > 5
+        raise RoomQuantityError.new("Blocks can have a maximum of 5 rooms")
+      end
+    end
+
+    def check_if_enough(availability, no_of_rooms)
+      if availability.length < no_of_rooms
+        raise RoomQuantityError.new "not enough rooms available for that date."
+      end
+    end
+
     def check_reserved(start_date, end_date)
       check_against = DateRange.new(start_date, end_date).nights_arr
-      not_available = []
 
+      not_available = []
       check_against.each do |date|
         @all_reservations.each do |booking|
           if booking.date_range.include?(date)
@@ -85,7 +99,7 @@ module Hotel
       return available
     end
 
-    def reserve_block_room (block, num)
+    def reserve_block_room(block, num)
       if num > block.rooms_available.length
         raise RoomQuantityError.new "Not enough rooms in block."
       end
