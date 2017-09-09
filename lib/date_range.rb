@@ -1,6 +1,9 @@
 require 'date'
 
 module Hotel
+  class InvalidDateRangeError < StandardError
+  end
+
   class DateRange
     attr_reader :start_date, :end_date, :number_of_nights
 
@@ -14,7 +17,7 @@ module Hotel
     end
 
     def check_valid
-      raise ArgumentError.new("wrong dates") if @number_of_nights <= 0
+      raise InvalidDateRangeError.new("Invalid Date Range.") if @number_of_nights <= 0
     end
 
     def nights_arr

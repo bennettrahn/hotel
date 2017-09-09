@@ -26,8 +26,8 @@ describe 'DateRange class' do
       date1 = Date.new(2017,9,1)
       date2 = Date.new(2017,9,3)
 
-      proc {Hotel::DateRange.new(date2, date1)}.must_raise ArgumentError
-      proc {Hotel::DateRange.new(date1, date1)}.must_raise ArgumentError
+      proc {Hotel::DateRange.new(date2, date1)}.must_raise Hotel::InvalidDateRangeError
+      proc {Hotel::DateRange.new(date1, date1)}.must_raise Hotel::InvalidDateRangeError
     end
   end
 

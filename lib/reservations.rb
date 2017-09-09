@@ -1,6 +1,9 @@
 require 'date'
 
 module Hotel
+  class RoomQuantityError < StandardError
+  end
+
   class Reservations
     attr_reader :all_rooms, :all_reservations
 
@@ -27,7 +30,7 @@ module Hotel
       #this throws error if dates are wrong right away - begin rescue?
       availability = check_availability(start_date, end_date)
       if availability.length < no_of_rooms
-        raise ArgumentError.new "not enough rooms available for that date."
+        raise RoomQuantityError.new "not enough rooms available for that date."
       end
 
       id = (@all_reservations.length + 1)
@@ -44,7 +47,7 @@ module Hotel
 
       if block == true
         if no_of_rooms > 5
-          raise ArgumentError.new("Blocks can have a maximum of 5 rooms")
+          raise RoomQuantityError.new("Blocks can have a maximum of 5 rooms")
         end
         block_id = id
         booking = Block.new(id, rooms, date_range, block_id)
@@ -61,8 +64,6 @@ module Hotel
       not_available = []
 
       check_against.each do |date|
-      # check_against.each do |index|
-
         @all_reservations.each do |booking|
           if booking.date_range.include?(date)
             booking.rooms.each do |room|
@@ -86,7 +87,7 @@ module Hotel
 
     def reserve_block_room (block, num)
       if num > block.rooms_available.length
-        raise ArgumentError.new "Not enough rooms in block."
+        raise RoomQuantityError.new "Not enough rooms in block."
       end
 
       rooms_to_reserve = []

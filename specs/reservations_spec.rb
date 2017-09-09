@@ -52,7 +52,7 @@ describe 'Reservations class' do
 
     it 'raises exception when no rooms are available' do
       @hotel_res.make_booking(18, @start_date, @end_date)
-      proc {@hotel_res.make_booking(1, @start_date, @end_date)}.must_raise ArgumentError
+      proc {@hotel_res.make_booking(1, @start_date, @end_date)}.must_raise Hotel::RoomQuantityError
     end
 
     it 'creates consecutive id numbers for new bookings' do
@@ -76,8 +76,8 @@ describe 'Reservations class' do
       @hotel_res.make_booking(20, date1, (date1 + 1))
       @hotel_res.make_booking(20, (date1 + 2), (date1 + 3))
 
-      proc {@hotel_res.make_booking(1, date1, (date1 + 1))}.must_raise ArgumentError
-      proc {@hotel_res.make_booking(1, date1, (date1 + 2))}.must_raise ArgumentError
+      proc {@hotel_res.make_booking(1, date1, (date1 + 1))}.must_raise Hotel::RoomQuantityError
+      proc {@hotel_res.make_booking(1, date1, (date1 + 2))}.must_raise Hotel::RoomQuantityError
       @hotel_res.make_booking(1, (date1 + 1), (date1 + 2)).must_be_kind_of Hotel::Booking
     end
   end
@@ -99,7 +99,7 @@ describe 'Reservations class' do
     end
 
     it 'can only have 5 rooms per block' do
-      proc {@hotel_res.make_booking(6, @start_date, @end_date, block: true)}.must_raise ArgumentError
+      proc {@hotel_res.make_booking(6, @start_date, @end_date, block: true)}.must_raise Hotel::RoomQuantityError
 
     end
 
@@ -143,7 +143,7 @@ describe 'Reservations class' do
 
     it "can't reserve more rooms than the block has left." do
       @hotel_res.reserve_block_room(@block_booking, 4)
-      proc {  @hotel_res.reserve_block_room(@block_booking, 2)}.must_raise ArgumentError
+      proc {  @hotel_res.reserve_block_room(@block_booking, 2)}.must_raise Hotel::RoomQuantityError
 
     end
 
