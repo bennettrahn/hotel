@@ -84,7 +84,7 @@ module Hotel
       return available
     end
 
-    def reserve_room (block, num)
+    def reserve_block_room (block, num)
       if num > block.rooms_available.length
         raise ArgumentError.new "Not enough rooms in block."
       end
