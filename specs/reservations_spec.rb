@@ -104,40 +104,46 @@ describe 'Reservations class' do
     end
 
     it 'can reserve a room within a block' do
-      @block_booking.reserve_room(1)
+      @hotel_res.reserve_room(@block_booking, 1)
       @block_booking.rooms.length.must_equal 5
       @block_booking.rooms[0].reserved.must_equal true
       @block_booking.rooms[4].reserved.must_equal false
     end
 
     it 'reserving a room creates a new reservation, linked to the block' do
-      room_reserve = @block_booking.reserve_room(1)
+      room_reserve =   @hotel_res.reserve_room(@block_booking, 1)
 
       room_reserve.id.wont_equal @block_booking.id
 
+      @hotel_res.all_reservations.length.must_equal room_reserve.id
+
       room_reserve.block_id.must_equal @block_booking.block_id
+
+      room_reserve2 =   @hotel_res.reserve_room(@block_booking, 1)
+
+      @hotel_res.all_reservations.length.must_equal room_reserve2.id
 
     end
 
     it 'reserving rooms within only works on blocks' do
-      proc {@booking2.reserve_room(1)}.must_raise NoMethodError
+      proc {  @hotel_res.reserve_room(@booking2, 1)}.must_raise NoMethodError
     end
 
     it 'reserved room has the same date_range as block' do
-      room_reserve = @block_booking.reserve_room(1)
+      room_reserve =   @hotel_res.reserve_room(@block_booking, 1)
       @block_booking.date_range.must_equal room_reserve.date_range
     end
 
 
     it 'can return a list of availbe rooms within the block' do
-      @block_booking.reserve_room(1)
+      @hotel_res.reserve_room(@block_booking, 1)
       @block_booking.rooms_available.length.must_equal 4
       @block_booking.rooms_available[0].must_be_kind_of Hotel::Room
     end
 
     it "can't reserve more rooms than the block has left." do
-      @block_booking.reserve_room(4)
-      proc {@block_booking.reserve_room(2)}.must_raise ArgumentError
+      @hotel_res.reserve_room(@block_booking, 4)
+      proc {  @hotel_res.reserve_room(@block_booking, 2)}.must_raise ArgumentError
 
     end
 

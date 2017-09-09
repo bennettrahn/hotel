@@ -84,6 +84,25 @@ module Hotel
       return available
     end
 
+    def reserve_room (block, num)
+      if num > block.rooms_available.length
+        raise ArgumentError.new "Not enough rooms in block."
+      end
+
+      rooms_to_reserve = []
+      num.times do |i|
+        block.rooms[i].reserved = true
+        rooms_to_reserve << block.rooms[i]
+      end
+
+      res_id = @all_reservations.length + 1
+
+      booking = Booking.new(res_id, rooms_to_reserve, block.date_range, block_id: block.block_id)
+
+      @all_reservations << booking
+      return booking
+    end
+
 
   end
 end
