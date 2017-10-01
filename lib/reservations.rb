@@ -61,6 +61,9 @@ module Hotel
       return rooms
     end
 
+    # Toggling reserved here doesn't take the dates into account. I suspect this means you will run into trouble if you have multiple blocks containing the same rooms for different dates.
+    # Instead, each block should probably keep track of which rooms are reserved and which are still available.
+
     def check_number_for_block(no_of_rooms)
       if no_of_rooms > 5
         raise RoomQuantityError.new("Blocks can have a maximum of 5 rooms")
@@ -72,6 +75,14 @@ module Hotel
         raise RoomQuantityError.new "not enough rooms available for that date."
       end
     end
+    # This loop ends up being pretty complex. What if, similar to the way you've defined DateRange#include?, you wrote a DateRange#overlap?(start_date, end_date)? It seems like a similar delegation of responsibility, and would greatly simplify this loop.
+    # If you combined that with the suggestion below, the method would look like this:
+
+# def check_reserved(start_date, end_date, room)
+#   return @all_reservations.any? do |booking|
+#     booking.room == room && booking.overlap?(start_date, end_date)
+#   end
+# end
 
     def check_reserved(start_date, end_date)
       check_against = DateRange.new(start_date, end_date).nights_arr
@@ -98,6 +109,7 @@ module Hotel
       end
       return available
     end
+    # Since this is the only place you use check_reserved, why not make it take a room number in addition to checkin/checkout dates? It could return a boolean and further simplify this conditional.
 
     def reserve_block_room(block, num)
       if num > block.rooms_available.length
@@ -109,7 +121,7 @@ module Hotel
         block.rooms[i].reserved = true
         rooms_to_reserve << block.rooms[i]
       end
-
+      # This is an example of tight coupling. Instead of directly manipulating the block's data, it might be cleaner to write a method Block#reserve_rooms that does the work. That way, if the implementation of Block changes, this code will not have to change.
       res_id = @all_reservations.length + 1
 
       booking = Booking.new(res_id, rooms_to_reserve, block.date_range, block_id: block.block_id)
@@ -117,6 +129,7 @@ module Hotel
       @all_reservations << booking
       return booking
     end
+
 
 
   end
