@@ -16,5 +16,7 @@
 ### Part 2
 
 My Reservations class has way too much going on in it. Dan made some suggestions in his comments about moving some of the checking overlapping dates responsibility to the DateRange class, so I'm going to start there.
-If I have time/inclination I might tackle some of the other problems from the comments, such as the way Block stores rooms and seeing all reservations for a given date.
-The real problem with Reservations is the way it knows too much about what's going on in the other classes. It's repeatedly trying to access the attributes of other classes to check if they overlap, or to change reservation status. So hopefully moving some responsibility around will help take away some of that tight coupling. 
+
+If I have time/inclination I might tackle some of the other problems from the comments, such as the way Block stores rooms and seeing all reservations for a given date. Also, it might be interesting to play with the idea of using args and defaults for all the initialize arguments....
+
+The real problem with Reservations is the way it knows too much about what's going on in the other classes. It's repeatedly trying to access the attributes of other classes to check if they overlap, or to change reservation status. So hopefully moving some responsibility around will help take away some of that tight coupling.

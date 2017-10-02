@@ -35,5 +35,13 @@ module Hotel
       return false
     end
 
+    def overlap?(check_date_range)
+      if @end_date > check_date_range.start_date || @start_date <= check_date_range.end_date
+        return true
+      else
+        return false
+      end
+    end
+
   end
 end

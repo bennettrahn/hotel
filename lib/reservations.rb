@@ -78,23 +78,23 @@ module Hotel
     # This loop ends up being pretty complex. What if, similar to the way you've defined DateRange#include?, you wrote a DateRange#overlap?(start_date, end_date)? It seems like a similar delegation of responsibility, and would greatly simplify this loop.
     # If you combined that with the suggestion below, the method would look like this:
 
-# def check_reserved(start_date, end_date, room)
-#   return @all_reservations.any? do |booking|
-#     booking.room == room && booking.overlap?(start_date, end_date)
-#   end
-# end
+    # def check_reserved(start_date, end_date, room)
+    #   return @all_reservations.any? do |booking|
+    #     booking.room == room && booking.overlap?(start_date, end_date)
+    #   end
+    # end
 
     def check_reserved(start_date, end_date)
       check_against = DateRange.new(start_date, end_date).nights_arr
 
+      not_available_reservations = @all_reservations.any? do |booking|
+        booking.date_range.overlap?(check_against)
+      end
+
       not_available = []
-      check_against.each do |date|
-        @all_reservations.each do |booking|
-          if booking.date_range.include?(date)
-            booking.rooms.each do |room|
-              not_available << room
-            end
-          end
+      not_available_reservations.each do |booking|
+        booking.rooms.each do |room|
+          not_available << room
         end
       end
       return not_available
@@ -110,6 +110,23 @@ module Hotel
       return available
     end
     # Since this is the only place you use check_reserved, why not make it take a room number in addition to checkin/checkout dates? It could return a boolean and further simplify this conditional.
+
+    # def check_reserved(start_date, end_date)
+    #   check_against = DateRange.new(start_date, end_date).nights_arr
+    #
+    #   not_available = []
+    #   check_against.each do |date|
+    #     @all_reservations.each do |booking|
+    #       if booking.date_range.include?(date)
+    #         booking.rooms.each do |room|
+    #           not_available << room
+    #         end
+    #       end
+    #     end
+    #   end
+    #   return not_available
+    # end
+
 
     def reserve_block_room(block, num)
       if num > block.rooms_available.length
@@ -127,6 +144,7 @@ module Hotel
       booking = Booking.new(res_id, rooms_to_reserve, block.date_range, block_id: block.block_id)
 
       @all_reservations << booking
+      #but then how do I get a res_id and push to all_reservations?
       return booking
     end
 
